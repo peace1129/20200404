@@ -17,7 +17,7 @@ class CreateGroupsTable extends Migration
             $table->Increments('id');
             $table->string('グループ名');
             $table->timestamps();
-
+            
         });
     }
 
