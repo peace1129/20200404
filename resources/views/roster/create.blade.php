@@ -23,10 +23,9 @@
       <div class="col-md-1">
         <label>氏名</lavel>
       </div>
-      <div>
-        <input type="text" name="middleName" value="{{ old('middleName') }}">
-
-        <input type="text" name="name" value="{{ old('name') }}">
+      <div class="col-md-3">
+        <input class="col-md-5" type="text" name="middleName" value="{{ old('middleName') }}">
+        <input class="col-md-5" type="text" name="name" value="{{ old('name') }}">
       </div>
     </div>
 
@@ -34,7 +33,7 @@
       <div class="col-md-1">
         <label>性別</lavel>
       </div>
-      <div>
+      <div class="col-md-3">
         <label class="radio-inline">
           <input type="radio" name="gender" value="1">男性
         </label>
@@ -48,8 +47,8 @@
       <div class="col-md-1">
         <label>都道府県</lavel>
       </div>
-      <div>
-        <input name="pref" type="text" class="textField" id="tField3" list="prefCmbList" value="{{ old('pref') }}">
+      <div class="col-md-3">
+        <input class="col-md-10" name="pref" type="text" class="textField" id="tField3" list="prefCmbList" value="{{ old('pref') }}">
         <datalist id="prefCmbList">
           @foreach($prefCollection as $bufList1)
             @foreach($bufList1 as $bufList2)
@@ -67,8 +66,8 @@
       <div class="col-md-1">
         <label>住所</lavel>
       </div>
-      <div>
-        <input type="text" name="address" value="{{ old('address') }}">
+      <div class="col-md-3">
+        <input class="col-md-10" type="text" name="address" value="{{ old('address') }}">
       </div>
     </div>
 
@@ -76,10 +75,10 @@
       <div class="col-md-1">
         <label>グループ</lavel>
       </div>
-      <div>
-        <input name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" value="{{ old('grpName') }}">
+      <div class="col-md-3">
+        <input class="col-md-10" name="grpName" type="text" class="textField" id="tField3" list="grpCmbList" value="{{ old('grpName') }}">
         <datalist id="grpCmbList">
-          @foreach($gNameList as $d)
+          @foreach($gList as $d)
             <option value="{{$d->グループ名}}">
           @endforeach
         </datalist>

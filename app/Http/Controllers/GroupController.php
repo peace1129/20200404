@@ -23,8 +23,24 @@ class GroupController extends Controller
   }
 
   // グループ名重複チェックボタン押下時処理
-  public function createVali(){
+  public function createChk(Request $request){
+    $request->validate([
+      'grpName'      => 'required|max:10|unique:groups,グループ名'
+    ]);
 
-    return view('group.create',['gDataList' => $gDataList]);
+    $request->session()->put('grpName', $request->input('grpName'));
+
+    return view('group.create_exec');
+  }
+
+  public function createExec(Request $request){
+      $group = new Group();
+      $group->create([
+        'グループ名' => $request->session()->get('grpName')
+      ]);
+
+      $gData = $group->getGrpCnt();
+
+      return view('group.index',['gData' => $gData]);
   }
 }

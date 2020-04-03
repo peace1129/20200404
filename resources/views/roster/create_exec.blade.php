@@ -6,7 +6,9 @@
 @section('content')
 
 <p><label class="h2">確認画面</label></p>
+<p>以上の情報で登録を行います。</p>
 
+<form action="/roster/createExec" method="get">
   <div class="container-fluid">
     <div class="row md-5">
       <div class="col-md-1">
@@ -57,10 +59,6 @@
   </div>
   <p></p>
 <button type="submit" class="btn btn-primary">登録</button>
-@isset ($status)
-  <div class="complete">
-    <p>以上の情報で登録を行います。</p>
-  </div>
-@endisset
+
 
 @endsection

@@ -11,7 +11,7 @@ class Group extends Model
   protected $table = 'groups';
 
   protected $fillable = [
-    'グループ',
+    'グループ名',
   ];
 
   // グループテーブルをグループ名でGroupByしたデータの取得

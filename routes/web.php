@@ -26,5 +26,6 @@ Route::post('/roster/delete', 'RosterController@delete');
 // グループ一覧画面
 Route::get('/group/index', 'GroupController@index');
 Route::get('/group/create', 'GroupController@create');
-Route::post('/group/create', 'GroupController@createVali');
+Route::get('/group/createChk', 'GroupController@createChk');
+Route::post('/group/createExec', 'GroupController@createExec');
 Route::post('/group/delete', 'GroupController@delete');

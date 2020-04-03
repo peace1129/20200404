@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Roster extends Model
 {
+  protected $primaryKey = 'userId';
   protected $table = 'rosters';
 
   protected $fillable = [

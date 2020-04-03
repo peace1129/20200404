@@ -23,10 +23,12 @@ class RosterController extends Controller
       ]);
     }
 
+
     // 名簿一覧グループ検索ボタン押下時処理
     public function group_search(Request $request){
       $grp = $request->input('selectGrp');
       $roster = new Roster();
+      $gList = $roster->getGroupList();
 
       if (is_null($grp)){
         $rData = $roster->getRosterData();
@@ -36,32 +38,31 @@ class RosterController extends Controller
 
       }
 
-      $gList = $roster->getGroupList();
-
       return view('roster.index',[
         'rData'=>$rData,
         'gList'=>$gList
       ]);
     }
 
+
     // 名簿一覧新規登録ボタン押下時処理
     public function create(){
       $roster = new Roster();
-      $gNameList = $roster->getGroupList();
+      $gList = $roster->getGroupList();
 
       //都道府県取得APIの読み込み
       $prefList = json_decode(file_get_contents('http://geoapi.heartrails.com/api/json?method=getPrefectures'), true);
       $prefCollection = collect($prefList);
 
       return view('roster.create',[
-        'gNameList'=>$gNameList,
+        'gList'=>$gList,
         'prefCollection'=>$prefCollection
       ]);
     }
 
+
     // 名簿一覧の新規登録画面に名簿情報が入力された状態で登録ボタンが押下された場合の処理
     public function createChk(Request $request){
-
       $request->validate([
         'middleName'      => 'required|max:10',
         'name'            => 'required|max:10',
@@ -70,22 +71,37 @@ class RosterController extends Controller
         'address'         => 'required'
       ]);
 
-      $roster = new Roster();
-      $gNameList = $roster->getGroupList();
-
-      //都道府県取得APIの読み込み
-      $prefList = json_decode(file_get_contents('http://geoapi.heartrails.com/api/json?method=getPrefectures'), true);
-      $prefCollection = collect($prefList);
-
       $request->session()->put('middleName', $request->input('middleName'));
       $request->session()->put('name', $request->input('name'));
       $request->session()->put('gender', $request->input('gender'));
-      $request->session()->put('pref', $request->input('pref'));
       $request->session()->put('address', $request->input('address'));
+      $request->session()->put('pref', $request->input('pref'));
       $request->session()->put('grpName', $request->input('grpName'));
 
        return view('roster.create_exec');
     }
+
+
+    // 名簿一覧追加処理
+    public function createExec(Request $request){
+      $roster = new Roster();
+
+      $roster->create([
+        '氏名' => $request->session()->get('middleName') . $request->session()->get('name'),
+        '性別' => $request->session()->get('gender'),
+        '住所' => $request->session()->get('address'),
+        '都道府県' => $request->session()->get('pref'),
+        'グループ名' => $request->session()->get('grpName'),
+      ]);
+
+      $rData = $roster->getRosterData();
+      $gList = $roster->getGroupList();
+
+      return view('roster.index',[
+        'rData' => $rData,
+        'gList' => $gList]);
+    }
+
 
     // 名簿一覧編集ボタン押下時処理
     public function edit(Request $request){
@@ -93,8 +109,18 @@ class RosterController extends Controller
       $roster = new Roster();
       $uData = $roster->getUserData($userId);
 
-      return view('roster.edit',['uData' => $uData]);
+      $gList = $roster->getGroupList();
+
+      $prefList = json_decode(file_get_contents('http://geoapi.heartrails.com/api/json?method=getPrefectures'), true);
+      $prefCollection = collect($prefList);
+
+      return view('roster.edit',[
+        'uData' => $uData,
+        'gList' => $gList,
+        'prefCollection'=>$prefCollection
+      ]);
     }
+
 
     // 名簿一覧削除ボタン押下時処理
     public function delete(Request $request){
@@ -114,19 +140,4 @@ class RosterController extends Controller
 
       ]);
     }
-
-    // 名簿一覧追加処理
-    public function createExec(){
-
-      $name = $req->session()->get('middleName') . $req->session()->get('name');
-      $gender = $req->session()->get('gender');
-      $pref = $req->session()->get('pref');
-      $address = $req->session()->get('address');
-      $grpName = $req->session()->get('grpName');
-
-      return view('roster.index',[
-        'rData' => $rData,
-        'gList' => $gList]);
-    }
-
 }
